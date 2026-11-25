@@ -8,6 +8,12 @@ import { join } from 'node:path';
 const line =
   'My Wi-Fi went down for five minutes today, so I had to talk to my family. They seem nice.';
 
+// The bounty caps a line at 200 characters; fail loudly instead of
+// submitting an over-long entry the gate would refuse.
+if (line.length < 1 || line.length > 200) {
+  throw new Error(`entry line must be 1-200 characters, got ${line.length}`);
+}
+
 const outDir = process.env.MAKEFUN_OUTPUT_DIR ?? '/output';
 mkdirSync(outDir, { recursive: true });
 writeFileSync(join(outDir, 'entry.txt'), line);
